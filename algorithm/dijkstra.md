@@ -78,7 +78,7 @@ for _ in range(e):
     s, e, cost = map(int, input().split())
     # 방향 그래프인 경우
     G[s].append((e, cost))
-    # 무방향 그래프의 경우 G[e].append(s, c) 추가
+    # 무방향 그래프의 경우 G[e].append((s, cost)) 추가
 
 # 다익스트라 알고리즘
 def dijkstra(start):
