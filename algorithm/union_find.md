@@ -1,17 +1,13 @@
----
-toc: true
-title: "서로소 집합 알고리즘[파이썬 코드]"
-category:
-  - Algorithm
----
 서로소 집합이란 공통 원소가 없는 두 집합을 의미.
 
 서로소 집합 자료구조란 서로소 부분 집합들로 나누어진 원소들의 데이터를 처리하기 위한 자료구조이다.
 
 서로소 집합 자료구조의 연산자
 
-- union - 합집합
-- find - 찾기
+- `union`
+	- 두개의 원소가 포함된 집합을 하나의 집합으로 합치는 연산
+- `find` 
+	- 특정한 원소가 속한 집합이 어떤 집합인지 알려주는 연산
 
 서로소 집합은 연산의 이름을 딴, **union-find** (어떤 원소를 공통으로 갖는지 찾는다) 자료구조라고 불리기도 한다.
 
@@ -84,27 +80,23 @@ $($2, 4)의 루트 노드는 각각 2와 4이기 때문에 노드 4의 부모$($
 
 ```python
 v, e = map(int, input().split())
-# 부모 테이블 초기화
-parent = [0] * (v + 1)
-
 # 부모 테이블에서 부모를 자기 자신으로 초기화
-for i in range(1, v + 1):
-    parent[i] = i
+parent = [i for i in range(v + 1)]
 
 ''' union-find '''
 
 # x노드의 루트 노드를 찾아서 반환
-def find_parent(parent, x):
+def find_parent(x):
     # 거슬러 올라가다가 노드 번호와 부모 노드가 같아지는 시점이 특정 노드의 루트가 된다.
     if parent[x] != x:
 				# 해당 노드의 루트 노드를 부모 노드로 수정
-        parent[x] = find_parent(parent, parent[x])
+        parent[x] = find_parent(parent[x])
     return parent[x]
 
 # 노드 a와 노드 b가 속한 집합을 합치기
-def union_parent(parent, a, b):
-    a = find_parent(parent, a)
-    b = find_parent(parent, b)
+def union_parent(a, b):
+    a = find_parent(a)
+    b = find_parent(b)
     if a < b: parent[b] = parent[a]
     else: parent[a] = parent[b]
 
@@ -113,12 +105,12 @@ def union_parent(parent, a, b):
 # union 연산을 각각 수행
 for i in range(e):
     a, b = map(int, input().split())
-    union_parent(parent, a, b)
+    union_parent(a, b)
 
 # 각 원소가 속한 집합 출력
 print("각 원소가 속한 집합: ", end=" ")
 for i in range(1, v + 1):
-    print(find_parent(parent, i), end=" ")
+    print(find_parent(i), end=" ")
 print()
 
 # 부모 테이블 출력
